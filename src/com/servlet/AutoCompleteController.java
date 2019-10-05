@@ -28,74 +28,66 @@ public class AutoCompleteController extends HttpServlet {
 
         protected void doGet(HttpServletRequest request,
                 HttpServletResponse response) throws ServletException, IOException {
-
+        		int WORD_SUGGESTIONS_COUNT=10;
                 response.setContentType("application/json");
                 try {
                 		//Getting the entered word from request parameter
                         String wordStr = request.getParameter("term");
                         System.out.println("Data from ajax call " + wordStr);
                         ArrayList<String> list=null;
-                        MatchingWords matchingWords=null;
+                        //MatchingWords matchingWords=null;
+                        
+                        String wordToSearch=wordStr;
+                        String wordToReturned="";
                         
                         //If multiple words
-                        if(wordStr.contains(" "))
+                        if(wordToSearch.contains(" "))
                 		{
-                			//String strary[]=wordStr.split(" ");
-                			
-                        	//Get the last word of the entered sentence
-                			int index= wordStr.lastIndexOf(" ");
-                			String wordToSearch= wordStr.substring(index+1).trim();
-                			
-                			 matchingWords= new MatchingWords(wordToSearch,1);
-                             list= matchingWords.getMatchingWords(10);
-                             
-                             if(list.size()<1)
-                             {
-                             	matchingWords= new MatchingWords(wordToSearch,2);
-                                 list = matchingWords.getMatchingWords(10);
-                             }
-                             
-                             for(int i=0;i<list.size();i++)
-                             {
-                            	 String s= list.get(i);
-                            	 list.set(i, wordStr.substring(0,index)+" "+s);
-                             }
+                			//Get the last word of the entered sentence
+                			int index= wordToSearch.lastIndexOf(" ");
+                			wordToSearch= wordToSearch.substring(index+1).trim();
+                			wordToReturned =wordToSearch.substring(0,index)+" ";
+                		      
                 		}
-                        else {
-				/*
-				 * 
-				 * 
-				 */
-                        	list= new ArrayList<String>();
-                        	Iterable<String> itr= tstObject.prefixMatch(wordStr);
-                            for(String str:itr)
-                            {
-                            	list.add(str);
-                            	if(list.size()>10)
-                            	{
-                            		break;
-                            	}
-                            }
+                        
+                       //Get '5' words from TST with same prefix
+                        list =getSamePrefixWordsFromTST(wordToSearch, 5);
+                        System.out.println("Count of Words found from TST: "+list.size());
                             
-                            if(list.size()<5)
-                            {
-                            	matchingWords= new MatchingWords(wordStr,1); 
-                            	ArrayList<String> listEditDis =matchingWords.getMatchingWords(5);
-                            	
-                            	list.addAll(listEditDis);
-                            }
-                            
-                        }
+                        //If word count is less than 
+                        if(list.size()<WORD_SUGGESTIONS_COUNT)
+                         {
+                        	//Search matching words with edit distance '1' from word dictionary 
+                        	ArrayList<String> listEditDis =getMatchingWordsFromWordDictionary(wordToSearch, 1, (WORD_SUGGESTIONS_COUNT-list.size()));                           	
+                           	list.addAll(listEditDis);
+                           	System.out.println("Count of Words found from Dictionary (Edit Dis '1'): "+listEditDis.size());
+                         } 
                         
-                        
-                        
-                        if(list.size()<1)
+                        //If still word count is less than WORD_SUGGESTIONS_COUNT (Run word search with edit distance '2')
+                        if(list.size()<WORD_SUGGESTIONS_COUNT)
                         {
-                        	matchingWords= new MatchingWords(wordStr,3);
-                            list = matchingWords.getMatchingWords(10);
+                       	   //Search matching words with edit distance '2' from word dictionary 
+                       	    ArrayList<String> listEditDis =getMatchingWordsFromWordDictionary(wordToSearch, 2, (WORD_SUGGESTIONS_COUNT-list.size()));                           	
+                          	list.addAll(listEditDis);
+                          	System.out.println("Count of Words found from Dictionary (Edit Dis '2'): "+listEditDis.size());
                         }
                         
+                        //If still word count is less than WORD_SUGGESTIONS_COUNT (Run word search with edit distance '3')
+                        if(list.size()<WORD_SUGGESTIONS_COUNT)
+                        {
+                       	   //Search matching words with edit distance '3' from word dictionary 
+                       	    ArrayList<String> listEditDis =getMatchingWordsFromWordDictionary(wordToSearch, 3, (WORD_SUGGESTIONS_COUNT-list.size()));
+                       	    System.out.println("Count of Words found from Dictionary (Edit Dis '3'): "+listEditDis.size());
+                          	list.addAll(listEditDis);
+                        } 
                         
+                                                
+                        //Append the matched words with the word sentence to be returned
+                        for(int i=0;i<list.size();i++)
+                        {
+                       	 String s= list.get(i);
+                       	 list.set(i, wordToReturned+s);
+                        }
 
                         String searchList = new Gson().toJson(list);
                         response.getWriter().write(searchList);
@@ -104,5 +96,28 @@ public class AutoCompleteController extends HttpServlet {
                 } catch (Exception e) {
                         System.err.println(e.getMessage());
                 }
+        }
+        
+        public ArrayList<String> getSamePrefixWordsFromTST(String wordStr, int wordCount)
+        {
+        	ArrayList<String> list= new ArrayList<String>();
+        	//Get the words from TST with same prefix
+        	Iterable<String> itr= tstObject.prefixMatch(wordStr);
+            for(String str:itr)
+            {
+            	list.add(str);
+            	if(list.size()>=wordCount)
+            	{
+            		break;
+            	}
+            }
+            return list;
+        }
+        
+        public ArrayList<String> getMatchingWordsFromWordDictionary(String wordStr, int editDistance, int wordCount)
+        {
+        	MatchingWords matchingWords= new MatchingWords(wordStr,editDistance);
+        	ArrayList<String> list =matchingWords.getMatchingWords(wordCount);
+            return list;
         }
 }

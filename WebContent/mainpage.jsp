@@ -19,7 +19,7 @@
 
 <form action="SerachWordController" method="get">
 <div class="header" align="center">
-        <h3>SCOUT Web Search Engine</h3>
+        <h3>Web Search Engine</h3>
 </div>
 <br />
 <br />
