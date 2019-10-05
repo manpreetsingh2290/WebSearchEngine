@@ -58,7 +58,7 @@
             <tr> 
             <td><%=pageRank%></td> 
                 <td><a href="${pageContext.request.contextPath}/StaticPageController<%=data.getPagePath()%>"><%=data.getPageName()%></a></td> 
-                <td><%=data.getWordCount()%></td> 
+                <td align='center'><%=data.getWordCount()%></td> 
                 <td><%=data.getWordStr()%></td>
             </tr> 
             <%}%> 
