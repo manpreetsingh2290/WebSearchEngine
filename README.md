@@ -10,6 +10,8 @@ Web search engine to find and rank web pages using web crawling and optimizing t
 5. Run the (WebSearchEngine) project on web server (Tomcat).
 6. Open URL (http://localhost:[port]/WebSearchEngine/) in browser.
 7. Enter one letter in search box, it will start the TST creation in server (it can take few minutes depending upon the number of HTML files), after TST is loaded in memory, all search operations can be performed (Word Suggestions, Spell Check and Page Search) in very fast way.
+
+## Screen Shots:
 ---
 <img src="Screen_Shots/Word_Suggestions1.JPG">
 ---
