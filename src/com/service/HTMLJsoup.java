@@ -43,19 +43,6 @@ public class HTMLJsoup {
 			}
 		}
 	
-//		Pattern p = Pattern.compile("\\w+");
-//		Matcher m = p.matcher(page);
-//		while(m.find()) {
-//			hm.put(m.group(), 1);
-//		}
-//		int count=0;
-//		FileWriter fw = new FileWriter(new File("src/dic.txt"));
-//		for(Object ss : hm.keySet().toArray()) {
-//			count++;
-//			fw.write(ss.toString()+"\n");
-//			System.out.println(ss.toString());
-//		}
-//		fw.close();
 		System.out.println(count);
 		
 		
@@ -69,7 +56,6 @@ public class HTMLJsoup {
 			String destination = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\") )+"\\" +fname+"_converted.txt";
 			//System.out.println(destination);
 			FileWriter fw = new FileWriter(destination);
-			//page +=" "+ doc.text();
 			fw.write(doc.text());// Writing parsed HTML to text file
 			fw.close();
 			count++;
