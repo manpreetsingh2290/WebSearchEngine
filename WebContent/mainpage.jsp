@@ -44,8 +44,8 @@
          <tr bgcolor="00FF7F"> 
          <th><b>Page Rank</b></th> 
           <th><b>HTML Page</b></th> 
+          <th><b>Total Word Count</b></th> 
           <th><b>Word Count</b></th> 
-          <th><b>Word-Wise Count</b></th> 
          </tr>
         
          <%
