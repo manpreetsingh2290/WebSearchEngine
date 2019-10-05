@@ -31,15 +31,18 @@ public class AutoCompleteController extends HttpServlet {
 
                 response.setContentType("application/json");
                 try {
+                		//Getting the entered word from request parameter
                         String wordStr = request.getParameter("term");
                         System.out.println("Data from ajax call " + wordStr);
                         ArrayList<String> list=null;
                         MatchingWords matchingWords=null;
                         
+                        //If multiple words
                         if(wordStr.contains(" "))
                 		{
                 			//String strary[]=wordStr.split(" ");
                 			
+                        	//Get the last word of the entered sentence
                 			int index= wordStr.lastIndexOf(" ");
                 			String wordToSearch= wordStr.substring(index+1).trim();
                 			
