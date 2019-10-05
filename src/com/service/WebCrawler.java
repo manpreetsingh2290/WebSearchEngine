@@ -1,10 +1,5 @@
 package com.service;
-// A minimal Web Crawler written in Java
 
-// Usage: From command line 
-//     java WebCrawler <URL> [N]
-//  where URL is the url to start the crawl, and N (optional)
-//  is the maximum number of pages to download.
 
 import java.text.*;
 import java.util.*;
@@ -49,9 +44,7 @@ public class WebCrawler {
 		}
 		System.out.println("Maximum number of pages:" + maxPages);
 
-		/*
-		 * Behind a firewall set your proxy and port here!
-		 */
+		
 		Properties props = new Properties(System.getProperties());
 		props.put("http.proxySet", "true");
 		props.put("http.proxyHost", "webcache-cup");

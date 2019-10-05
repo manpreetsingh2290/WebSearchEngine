@@ -24,7 +24,7 @@ public class MatchingWords {
 		this.editDidtanceFactor=editDidtanceFactor;
 	}
 	
-	
+	//Method to get Matching words from the word dictionary file
 	public ArrayList<String> getMatchingWords(int maxWords)
 	{
 		ArrayList<String> matchingWordlsList= new ArrayList<String>();
@@ -74,6 +74,7 @@ public class MatchingWords {
 		
 		return matchingWordlsList;
 	}
+	
 	public  int editDistance(String word1, String word2) {
 		int len1 = word1.length();
 		int len2 = word2.length();
@@ -116,7 +117,7 @@ public class MatchingWords {
 	
 	public static void main(String[] args) {
 		
-		MatchingWords obj= new MatchingWords("bello",1);
+		MatchingWords obj= new MatchingWords("hello",2);
 		System.out.println(obj.getMatchingWords(20));
 
 	}
