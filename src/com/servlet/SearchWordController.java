@@ -18,7 +18,7 @@ import com.apis.TST;
 import com.service.SearchResultData;
 
 
-public class SerachWordController extends HttpServlet {
+public class SearchWordController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//public static final TST<ArrayList<SearchResultData>> tstObject=DictCreator.getGeneratedTST();
 	static {		
@@ -28,7 +28,7 @@ public class SerachWordController extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SerachWordController() {
+    public SearchWordController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,26 +47,32 @@ public class SerachWordController extends HttpServlet {
 		
 		String action = request.getParameter("action");
 
+		//If action is to Search the word
 		if ("SearchWord".equals(action)) {
+			//If null or empty string
 			if(wordStr==null || "".equalsIgnoreCase(wordStr))
 			{
 				RequestDispatcher rd =  request.getRequestDispatcher("mainpage.jsp"); 
-				 rd.forward(request, response);
-				 return;
+				rd.forward(request, response);
+				return;
 			}
 			
-			
+			//Map to store page-wise count of word's occurrences
+			//Key is the path to the HTML page to uniquely track the pages
 			HashMap<String,SearchResultData> mapObj= new HashMap<String,SearchResultData>();
 			ArrayList<SearchResultData> dataList=null;
 			SearchResultData obj=null;
+			//If multiple words
 			if(wordStr.contains(" "))
 	 		{
 	 			String strary[]=wordStr.split(" ");
 	 			
+	 			//Loop over the entered words and search each word in TST
 	 			for(String str:strary)
 	 			{
 	 				dataList= tstObject.get(str);
 	 				
+	 				//If atleast one page found containing the word
 	 				if(dataList!=null && dataList.size()>0)
 	 				{
 	 					for(int i=0;i<dataList.size();i++)
@@ -75,13 +81,15 @@ public class SerachWordController extends HttpServlet {
 	 	 	 				SearchResultData objNew=mapObj.get(obj.getPagePath());
 	 	 	 				if(objNew!=null)
 	 	 	 				{
-	 	 	 					objNew.setWordCount(obj.getWordCount()+objNew.getWordCount()); 	 					
+	 	 	 					objNew.setWordCount(obj.getWordCount()+objNew.getWordCount());
+	 	 	 					objNew.setWordStr(obj.getWordStr()+":"+obj.getWordCount()+","+objNew.getWordStr());
 	 	 	 					mapObj.put(objNew.getPagePath(), objNew);
 	 	 	 					
 	 	 	 				}
 	 	 	 				else
 	 	 	 				{
-	 	 	 					SearchResultData temp = new SearchResultData(obj.getPageName(), obj.getWordStr(), 
+	 	 	 					SearchResultData temp = new SearchResultData(obj.getPageName(), 
+	 	 	 							obj.getWordStr()+":"+obj.getWordCount(), 
 	 	 	 							obj.getWordCount(), obj.getWordOffsets(), obj.getPagePath());
 	 	 	 					mapObj.put(temp.getPagePath(), temp);
 	 	 	 				}	 				
@@ -93,6 +101,7 @@ public class SerachWordController extends HttpServlet {
 	 			
 	 			dataList= new ArrayList<SearchResultData>();
 	 			
+	 			//Converting Map to ArrayList
 	 			for(String key:mapObj.keySet())
 	 			{
 	 				dataList.add(mapObj.get(key));
@@ -100,32 +109,27 @@ public class SerachWordController extends HttpServlet {
 	 			
 			
 	 		}
-			else
+			else //If single word
 			{
 				dataList= tstObject.get(wordStr);
 				if(dataList==null) dataList= new ArrayList<SearchResultData>();
 			}
 			 
-				
 			
-			/*
-			 * Iterable<String> itr=tstObject.prefixMatch(wordStr);
-			 * System.out.println("prefix matches"); for(String str:itr) {
-			 * System.out.println(str); }
-			 */
-			
-			
-			
+			//Converting list to array (Quick select API is designed for Arrays)
 			SearchResultData objArray[]= (SearchResultData[])dataList.toArray(new SearchResultData[dataList.size()]);
 			ArrayList<SearchResultData> list= new ArrayList<SearchResultData>();
 			int count=objArray.length;
 			
+			
+			//Select top 10 pages from the list
 			for(int i=0;i<10;i++)
 			{
 				if(i>=count)
 				{
 					break;
 				}
+				//Getting ith ranked page and adding it to the list
 				list.add((SearchResultData)Quick.select(objArray, i));
 				
 			}
@@ -136,8 +140,10 @@ public class SerachWordController extends HttpServlet {
 			request.setAttribute("SearchResultData",list);
 			
 			RequestDispatcher rd =  request.getRequestDispatcher("mainpage.jsp"); 
-			 rd.forward(request, response);
-		} else if ("SpellCheck".equals(action)) {
+			rd.forward(request, response);
+		} 
+		//If action is to check the spellings
+		else if ("SpellCheck".equals(action)) {
 		    
 			System.out.println("In Spell Check");
 			String spellCheckProcessedStr="";
@@ -150,6 +156,7 @@ public class SerachWordController extends HttpServlet {
 				color="red";
 				if(!isContainSpecialCharacters(str))
 				{
+					//Check if word is present in TST
 					if(tstObject.contains(str))
 					{
 						color="green";

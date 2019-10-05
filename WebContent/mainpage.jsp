@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<form action="SerachWordController" method="get">
+<form action="SearchWordController" method="get">
 <div class="header" align="center">
         <h3>Web Search Engine</h3>
 </div>
@@ -45,6 +45,7 @@
          <th><b>Page Rank</b></th> 
           <th><b>HTML Page</b></th> 
           <th><b>Word Count</b></th> 
+          <th><b>Word-Wise Count</b></th> 
          </tr>
         
          <%
@@ -58,6 +59,7 @@
             <td><%=pageRank%></td> 
                 <td><a href="${pageContext.request.contextPath}/StaticPageController<%=data.getPagePath()%>"><%=data.getPageName()%></a></td> 
                 <td><%=data.getWordCount()%></td> 
+                <td><%=data.getWordStr()%></td>
             </tr> 
             <%}%> 
        

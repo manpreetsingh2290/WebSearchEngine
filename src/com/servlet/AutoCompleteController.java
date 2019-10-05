@@ -33,7 +33,7 @@ public class AutoCompleteController extends HttpServlet {
                 try {
                 		//Getting the entered word from request parameter
                         String wordStr = request.getParameter("term");
-                        System.out.println("Data from ajax call " + wordStr);
+                        System.out.println("Data from ajax call: " + wordStr);
                         ArrayList<String> list=null;
                         //MatchingWords matchingWords=null;
                         
@@ -44,9 +44,9 @@ public class AutoCompleteController extends HttpServlet {
                         if(wordToSearch.contains(" "))
                 		{
                 			//Get the last word of the entered sentence
-                			int index= wordToSearch.lastIndexOf(" ");
-                			wordToSearch= wordToSearch.substring(index+1).trim();
-                			wordToReturned =wordToSearch.substring(0,index)+" ";
+                			int index= wordStr.lastIndexOf(" ");
+                			wordToSearch= wordStr.substring(index+1).trim();
+                			wordToReturned =wordStr.substring(0,index)+" ";
                 		      
                 		}
                         

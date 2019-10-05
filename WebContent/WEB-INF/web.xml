@@ -9,16 +9,16 @@
     <servlet-class>com.servlet.AutoCompleteController</servlet-class>
   </servlet>
    <servlet>
-    <servlet-name>SerachWordController</servlet-name>
-    <servlet-class>com.servlet.SerachWordController</servlet-class>
+    <servlet-name>SearchWordController</servlet-name>
+    <servlet-class>com.servlet.SearchWordController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AutoCompleteController</servlet-name>
     <url-pattern>/AutoCompleteController</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>SerachWordController</servlet-name>
-    <url-pattern>/SerachWordController</url-pattern>
+    <servlet-name>SearchWordController</servlet-name>
+    <url-pattern>/SearchWordController</url-pattern>
   </servlet-mapping>
   
   <servlet>

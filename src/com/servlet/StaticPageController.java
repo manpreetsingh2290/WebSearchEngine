@@ -34,7 +34,7 @@ public class StaticPageController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		// Set the response message's MIME type
+		// Set the response content type
 	      response.setContentType("text/html;charset=UTF-8");
 	      // Allocate a output writer to write the response message into the network socket
 	      PrintWriter out = response.getWriter();
