@@ -20,16 +20,16 @@ public class HTMLJsoup {
 	public static void main(String[] args) throws IOException {
 
 		
-		// accessing the HTML file directory
+		// Accessing the HTML files directory
 		File directory = new File(Constants.WEB_PAGES_PATH);
 		Stack<File> s = new Stack<File>();
-		for( File file : directory.listFiles()) {
+		for( File file : directory.listFiles()) { //Iterating through directories to find files
 			s.push(file);
 			while(!s.empty()) {
 				File f = s.pop();
 				if(f.isDirectory()) {
 					for(File ff : f.listFiles())
-						s.push(ff);
+						s.push(ff); //Pushing files from the directory into stack
 				}
 				else {
 					if(f.getName().contains(".") )
@@ -60,7 +60,7 @@ public class HTMLJsoup {
 		
 		
 	}
-	
+	//Method to extract text from HTML file using Java Jsoup library
 	private static void HTMLtoText(File file)  {
 		org.jsoup.nodes.Document doc;
 		try {
@@ -70,7 +70,7 @@ public class HTMLJsoup {
 			//System.out.println(destination);
 			FileWriter fw = new FileWriter(destination);
 			//page +=" "+ doc.text();
-			fw.write(doc.text());								// writting parsed HTML to file
+			fw.write(doc.text());// Writing parsed HTML to text file
 			fw.close();
 			count++;
 			System.out.println(file.getName()+" Converted");
