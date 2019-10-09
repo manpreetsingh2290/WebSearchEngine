@@ -4,7 +4,7 @@ Web search engine to find and rank web pages using web crawling and optimizing t
 ### Technologies: 		
 * Backend : **Java, JSP, Servlet**
 * Front end: **HTML, CSS, Ajax**
-* Algorithm/Data structures: **Ternary Search Tree(TST), Quick Sort, Hash Map**
+* Algorithms/Data structures: **Ternary Search Tree(TST), Quick Sort, Hash Map**
 
 ## Project flow and Steps to run the project:
 1. Open the project (WebSearchEngine) in Eclipse.
